@@ -6,10 +6,8 @@ function getParameterDefinitions () {
     {name: 'BottomText', initial: 'STANDARD', type: 'text', caption: 'Bottom Text', size: 30},
     {name: 'LeftText', initial: '45,LBS', type: 'text', caption: 'Left Text', size: 30},
     {name: 'RightText', initial: '20.4,KGS', type: 'text', caption: 'Right Text', size: 30},
-    {name: 'hidePlate', checked: true, type: 'checkbox', caption: 'Hide Plate'},
-    {name: 'movePlate', initial: 0, type: 'int', caption: 'adj', size: 30},
-
-
+    {name: 'hidePlate', checked: false, type: 'checkbox', caption: 'Hide Plate'},
+    //testing only{name: 'movePlate', initial: 0, type: 'int', caption: 'adj', size: 30},
   ];
 }
 
