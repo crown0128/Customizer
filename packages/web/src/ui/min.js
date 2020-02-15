@@ -16,7 +16,23 @@ function init () {
   let viewer = document.getElementById('viewerContext')
   let design = viewer.getAttribute('design-url')
 
-  gProcessor = new Processor(viewer)
+  gProcessor = new Processor(viewer,
+    { viewer: { plate: {size: 0,
+      m: {i: 1,
+        color: {r: 0.8, g: 0.8, b: 0.8, a: 0.5}
+      },
+      M: {i: 100,
+        color: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+      }
+    },
+      camera: {position: {x: 0, y: 0, z:500},
+        clip: {min: 0.5, max: 3000},
+        angle: {x:-39, y:0, z:0}
+      },
+      axis: {draw: false
+      }
+    }
+    })
 
   // load the given design
   if (design) {
@@ -30,7 +46,7 @@ function init () {
 
       if (design.match(/\.jscad$/i) || design.match(/\.js$/i)) {
         gProcessor.setStatus('Processing ' + design + " <img id=busy src='imgs/busy.gif'>")
-        gProcessor.setJsCad(source, design)
+        gProcessor.setJsCad(source, design);      
       }
     }
     xhr.send()

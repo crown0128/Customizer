@@ -7,3 +7,7 @@ packages/web/package-lock.json
 packages/core/package-lock.json
 packages/desktop/package-lock.json
 *.log
+/packages/web/.jekyll-cache/Jekyll/Cache/Jekyll--Cache/b7
+/packages/bak/dist
+/.vs
+/packages/web/_site

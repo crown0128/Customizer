@@ -1,6 +1,8 @@
 const log = require('./log')
 const getParameterDefinitions = require('@jscad/core/parameters/getParameterDefinitions')
 const getParameterValues = require('@jscad/core/parameters/getParameterValuesFromUIControls')
+const applyParameterValues = require('@jscad/core/parameters/applyParameterDefinitions')
+
 const { rebuildSolids, rebuildSolidsInWorker } = require('@jscad/core/code-evaluation/rebuildSolids')
 const { mergeSolids } = require('@jscad/core/utils/mergeSolids')
 
@@ -21,7 +23,7 @@ function Processor (containerdiv, options) {
     libraries: [],
     openJsCadPath: '',
     useAsync: true,
-    useSync: true,
+    useSync: false,
     viewer: {}
   }
   // apply all options found
@@ -373,6 +375,25 @@ Processor.prototype = {
     this.enableItems()
   },
 
+  setParameterValuesFromURL: function() {
+      if (document.location.hash) {
+          var querystring = document.location.hash.substring(1);
+            var paramsObj = []
+            if (querystring === void 0) {
+               querystring = document.location.search.substring(1); }
+            if (querystring) {
+                var pairs = querystring.split('&');
+                for (var i = 0; i < pairs.length; i++) {
+                    var pair = pairs[i].split('=');
+                    paramsObj[pair[0]] = decodeURIComponent(pair[1]);                   
+                }
+            }
+        }
+        this.paramDefinitions = paramsObj;
+        applyParameterValues(paramsObj, this.paramDefinitions, false);
+        return paramsObj;
+  },
+
   // set status and data to display
   setStatus: function (status, data) {
     if (typeof document !== 'undefined') {
@@ -411,7 +432,10 @@ Processor.prototype = {
     try {
       prevParamValues = getParameterValues(this.paramControls, /* onlyChanged */true)
     } catch (e) {}
-
+    try {
+    prevParamValues = this.setParameterValuesFromURL();
+    }
+    catch (e) {}
     this.abort()
     this.paramDefinitions = []
 
@@ -469,12 +493,26 @@ Processor.prototype = {
     this.setStatus('rendering')
 
     // rebuild the solid
-
     // prepare all parameters
+
     const parameters = getParameterValues(this.paramControls)
+
     const script = this.getFullScript()
     const fullurl = this.includePathBaseUrl ? this.includePathBaseUrl + this.filename : this.filename
     const options = {memFs: this.memFs}
+
+    var href = [];
+    for (var id in parameters) {
+        href.push(`${id}=${encodeURIComponent(parameters[id])}`)
+    }
+    href = this.baseurl + '#' + href.join('&');
+
+    var element = document.getElementById('urlDiv')
+    if (element === null) {
+      element = document.createElement('urlDiv')
+      element.innerHTML = href
+      element.id = 'urlDiv'
+    }
 
     this.state = 1 // processing
     let that = this
