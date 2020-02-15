@@ -2,13 +2,13 @@
  * min.css for OpenJSCAD.org viewer
  */
 
-.jscad-container {
+ .jscad-container {
   margin: 5px 15px 5px 5px; /* not inherited */
   padding: 20px; /* not inherited */
   color: Black;
   font-weight: bold;
   font-family: Helvetica, Arial, Sans;
-  border: thin solid black;
+  border: 0;
   min-width: 410px;
 }
 
@@ -43,11 +43,13 @@ canvas {
 #parametersdiv {
   margin: 5px; /* not inherited */
   border: thin solid rgb(200,200,200);
-  border-radius: 1em;     
+  border-radius: 0;     
   padding: 10px;
 
   background: white;
   opacity: 0.8;
+  width: 375px;
+
 }
 
 #parametersdiv table {
@@ -78,13 +80,14 @@ canvas {
 #parametersdiv td {
   margin:  0px; /* not inherited */
   border:  0px none gray; /* not inherited */
-  padding: 0px; /* not inherited */
+  padding: 2px; /* not inherited */
 }
 
 #parametersdiv input, #parametersdiv textarea, #parametersdiv select {
-  font-size: 0.9em;
-  background: #fea;
-  border: none;
+  font-size: 1em;
+  background: #fff;
+  border: 1;
+  padding: 1px;
 }
 
 #updateButton {

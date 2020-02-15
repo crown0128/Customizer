@@ -22,8 +22,8 @@ function Processor (containerdiv, options) {
     debug: false,
     libraries: [],
     openJsCadPath: '',
-    useAsync: true,
-    useSync: false,
+    useAsync: false,
+    useSync: true,
     viewer: {}
   }
   // apply all options found
@@ -510,7 +510,10 @@ Processor.prototype = {
     href = this.baseurl + '#' + href.join('&');
     pretty = pretty.join('||');
 
-    var element = document.getElementById('urlDiv').innerHTML = `<a href="${href}">Custom Link</a> ${pretty}`
+    var element = document.getElementById('urlDiv').innerHTML = 
+    `<a href="${href}">Custom Link</a><p><form action="/action_page.php">
+    <label for="fname">Etsy Code:</label>
+    <input type="text" id="fname" name="fname" readonly size=${pretty.length + 5} value="${pretty}"></p>`
 
     this.state = 1 // processing
     let that = this
