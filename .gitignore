@@ -11,3 +11,4 @@ packages/desktop/package-lock.json
 /packages/bak/dist
 /.vs
 /packages/web/_site
+/packages/web/jscad/weightplateclock.jscad.txt

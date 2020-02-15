@@ -47209,17 +47209,15 @@ Processor.prototype = {
     var options = { memFs: this.memFs };
 
     var href = [];
+    var pretty = [];
     for (var id in parameters) {
       href.push(id + '=' + encodeURIComponent(parameters[id]));
+      pretty.push('' + parameters[id]);
     }
     href = this.baseurl + '#' + href.join('&');
+    pretty = pretty.join('||');
 
-    var element = document.getElementById('urlDiv');
-    if (element === null) {
-      element = document.createElement('urlDiv');
-      element.innerHTML = href;
-      element.id = 'urlDiv';
-    }
+    var element = document.getElementById('urlDiv').innerHTML = '<a href="' + href + '">Custom Link</a> ' + pretty;
 
     this.state = 1; // processing
     var that = this;

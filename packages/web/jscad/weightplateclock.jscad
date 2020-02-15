@@ -6,36 +6,33 @@ function getParameterDefinitions () {
     {name: 'BottomText', initial: 'STANDARD', type: 'text', caption: 'Bottom Text', size: 30},
     {name: 'LeftText', initial: '45,LBS', type: 'text', caption: 'Left Text', size: 30},
     {name: 'RightText', initial: '20.4,KGS', type: 'text', caption: 'Right Text', size: 30},
-    {name: 'thickness', initial: 4, type: 'float', caption: 'Thickness'},
+    {name: 'hidePlate', checked: false, type: 'checkbox', caption: 'Hide Plate'},
 
   ];
 }
 
 
 function main (param) {
+
+include("/fonts/opentype.min.jscad");
+include("/fonts/fontsgothicb_ttf.jscad");
+
   var mainObjects = []; // our stack of objects
   var allObjects = []; // our stack of objects
   var p = []; // our stack of extruded line segments
 var textColor = [.8,.8,.8];
-allObjects.push(straightText(param.LeftText, param.thickness).setColor(textColor).translate([-110,-7.5,0]))
-allObjects.push(straightText(param.RightText, param.thickness).setColor(textColor).translate([110,-7.5,0]))
-allObjects.push(revolveText(param.TopText, 80, 130, true, param.thickness).setColor(textColor));
-allObjects.push(revolveText(param.BottomText, 80, 130, false, param.thickness).setColor(textColor));
+allObjects.push(straightText(param.LeftText).setColor(textColor).translate([-110,-7.5,0]))
+allObjects.push(straightText(param.RightText).setColor(textColor).translate([110,-7.5,0]))
+allObjects.push(revolveText(param.TopText, 80, 130, true).setColor(textColor));
+allObjects.push(revolveText(param.BottomText, 80, 130, false).setColor(textColor));
 
 
-//var path = new CSG.Path2D([ [10,10], [-10,10], [-10,-10], [10,-20] ], /* closed = */ false);
-//allObjects.push(path.rectangularExtrude(5, 8, 0, false));
-
-// let fPurisa = fontAPI.Font3D.parse(purisa_ttf_data.buffer);
-// let cagPurisa = fontAPI.Font3D.cagFromString(fPurisa, "Hello", 14);
-// let csgPurisa = linear_extrude({ height: 5 }, cagPurisa[0].union(cagPurisa));
-
-// allObjects.push(csgPurisa);
 
   var b = allObjects[0].getBounds();
   var m = 2;
   //var w = b[1].x - b[0].x + m * 2;
   //var h = b[1].y - b[0].y + m * 2;
+  if(!param.hidePlate)
   allObjects.push(weightPlateClock().rotateZ(45).translate([0,-254,-1]).setColor([.5,.5,.5]));
 
   //return union(A().rectangularExtrude(5,3,16,false));
@@ -43,7 +40,7 @@ allObjects.push(revolveText(param.BottomText, 80, 130, false, param.thickness).s
   return union(allObjects);
 }
 //
-function straightText(text, thickness = 3, textSize = .9)
+function straightText(text, thickness = 3, textSize = 28)
 {
   var vSpacing = 40
   var textArray = text.split(',')
@@ -51,20 +48,25 @@ function straightText(text, thickness = 3, textSize = .9)
 
   var zh = vSpacing/2 * (max(0,textArray.length - 1));
   textArray.forEach((word) => {
-    vector_text(-getTotalCharLen(word)/2,zh,word).forEach(function (s) {
-      allText.push(rectangular_extrude(s, {h:5, w:thickness, }).scale(textSize));
-     // allText.push(CSG.Path2D(s, false).rectangularExtrude(thickness, 5, 0, false))
-  })
+
+     let extrudedText = linear_extrude({ height: 5 }, getText(word, textSize)).translate([-getCharWidth(word)/2,zh,0]);
+
       zh-=vSpacing;
+      allText.push(extrudedText)
   });
+  return union(allText);
+
+} 
 
 
-
-return union(allText);
+function getText(text, textSize){
+     var gothic = Font3D.parse(fontsgothicb_ttf_data.buffer);
+     var cagText = Font3D.cagFromString(gothic, text, textSize);
+     return union(cagText);
 
 }
 
-function revolveText(text, textAngle = 90, radius = 180, invert = true, thickness = 3, textSize = .9)
+function revolveText(text, textAngle = 90, radius = 180, invert = true, thickness = 3, textSize = 28)
 {
   var invertVal = invert?1:-1
   var totalCharLen = getTotalCharLen(text);
@@ -72,7 +74,7 @@ function revolveText(text, textAngle = 90, radius = 180, invert = true, thicknes
   var iRadius = radius-invertVal*10;
 
 
-  spanAngle = min(textAngle, totalCharLen/(2/textSize));
+  spanAngle = min(textAngle, totalCharLen * 12/textSize);
   var charLen = 0;
   for (var x = 0; x < text.length; x++)
 {
@@ -80,11 +82,10 @@ function revolveText(text, textAngle = 90, radius = 180, invert = true, thicknes
     var c = text.charAt(x);
     var charWidth = getCharWidth(c);
     charLen += charWidth;
-    vector_char(0,0,c).segments.forEach(function (s) {
-    word.push(rectangular_extrude(s, {h:5, w: thickness}).scale(textSize).translate([-charWidth/2,invertVal*iRadius,0]).rotateZ(-invertVal*( (charLen- (charWidth)/2)/totalCharLen*spanAngle) +invertVal*(45-(90-spanAngle)/2)));
-    //-invertVal*charLen/totalCharLen * spanAngle-invertVal*40
-    //-x*15-6
-    });
+        if(c.trim() !== ''){
+    word.push(linear_extrude({height:5}, getText(c,textSize)).translate([-charWidth/2,invertVal*iRadius,0]).rotateZ(-invertVal*( (charLen- (charWidth)/2)/totalCharLen*spanAngle) +invertVal*(45-(90-spanAngle)/2)));
+    }
+    
 
 }
 return union(word);
@@ -99,11 +100,23 @@ function getTotalCharLen(text)
     totalCharLen += getCharWidth(c);
   }
   return totalCharLen;
+
 }
 
-function getCharWidth(c)
-{
-  return max(10,vector_char(0,0,c).width);
+function getCharWidth(c) {
+   if(c.trim() !== '')
+   {
+    var character = getText(c,28).toPoints();
+    console.log(character);
+    var minVal = character.reduce((minVal, p) => p.x < minVal ? p.x : minVal, character[0].x)
+    var maxVal = character.reduce((maxVal, p) => p.x > maxVal ? p.x : maxVal, character[0].x);
+    return maxVal-minVal+9;
+  }
+  else
+  {
+    return 15;
+  }
+
 }
 
   function weightPlateClock() { return union(
