@@ -6,7 +6,9 @@ function getParameterDefinitions () {
     {name: 'BottomText', initial: 'STANDARD', type: 'text', caption: 'Bottom Text', size: 30},
     {name: 'LeftText', initial: '45,LBS', type: 'text', caption: 'Left Text', size: 30},
     {name: 'RightText', initial: '20.4,KGS', type: 'text', caption: 'Right Text', size: 30},
-    {name: 'hidePlate', checked: false, type: 'checkbox', caption: 'Hide Plate'},
+    {name: 'hidePlate', checked: true, type: 'checkbox', caption: 'Hide Plate'},
+    {name: 'movePlate', initial: 0, type: 'int', caption: 'adj', size: 30},
+
 
   ];
 }
@@ -33,7 +35,7 @@ allObjects.push(revolveText(param.BottomText, 80, 130, false).setColor(textColor
   //var w = b[1].x - b[0].x + m * 2;
   //var h = b[1].y - b[0].y + m * 2;
   if(!param.hidePlate)
-  allObjects.push(weightPlateClock().rotateZ(45).translate([0,-254,-1]).setColor([.5,.5,.5]));
+  allObjects.push(weightPlateClock().rotateZ(45).translate([-4,-251,-1]).setColor([.5,.5,.5]));
 
   //return union(A().rectangularExtrude(5,3,16,false));
 
@@ -74,7 +76,7 @@ function revolveText(text, textAngle = 90, radius = 180, invert = true, thicknes
   var iRadius = radius-invertVal*10;
 
 
-  spanAngle = min(textAngle, totalCharLen * 12/textSize);
+  spanAngle = min(textAngle, totalCharLen * 10/textSize);
   var charLen = 0;
   for (var x = 0; x < text.length; x++)
 {
