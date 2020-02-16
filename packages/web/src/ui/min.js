@@ -6,6 +6,7 @@ const Processor = require('../jscad/processor')
 
 var gProcessor = null
 
+
 function init () {
   const versionText = 'OpenJSCAD.org Version ' + version
   console.log(versionText)
@@ -27,12 +28,16 @@ function init () {
     },
       camera: {position: {x: 0, y: 0, z:500},
         clip: {min: 0.5, max: 3000},
-        angle: {x:-39, y:0, z:0}
+        angle: {x:-29, y:0, z:0}
       },
       axis: {draw: false
       }
     }
     })
+    
+    document.getElementById('copyDesignID').addEventListener('click', function (event) {
+      copyText('designID');
+    }, false)
 
   // load the given design
   if (design) {
@@ -53,6 +58,18 @@ function init () {
   }
 }
 
+
+
 document.addEventListener('DOMContentLoaded', function (event) {
   init()
 })
+
+function copyText(controlID) {
+  var copyText = document.getElementById(controlID);
+  copyText.select();
+  copyText.setSelectionRange(0, 99999)
+  document.execCommand("copy");
+}
+
+
+

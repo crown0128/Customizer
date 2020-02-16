@@ -10,7 +10,7 @@ Purpose:
 -->
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-  <title>OpenJSCAD.org Logo</title>
+  <title>Customizer</title>
   <link rel="stylesheet" href="min.css" type="text/css">
 </head>
 
@@ -20,7 +20,7 @@ Purpose:
 <!-- setup display of the errors as required by OpenJSCAD.js -->
   <div class="jscad-container">
     <div id="header">
-      <div id="errordiv">hello</div>
+      <div id="errordiv"></div>
     </div>
 
 <!-- setup display of the viewer, i.e. canvas -->
@@ -32,8 +32,13 @@ Purpose:
       <div id="parametersdiv"></div>
       <div id="statusdiv"></div>
     </div>
+    <div id="urlDiv">
+      <p><a href="" id="urlLink">Custom Link</a></p>  
+      <p><textarea readonly id="designID"></textarea></p>
+      <p><button  id="copyDesignID">Copy Design ID</button></p>
+      </div>
   </div>
-  <div id="urlDiv">URL</div>
+
 </body>
 
 </html>

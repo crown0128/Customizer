@@ -188,6 +188,7 @@ Processor.prototype = {
     }
     this.statusbuttons.appendChild(this.abortbutton)
     this.formatDropdown = document.createElement('select')
+    this.formatDropdown.hidden = true;
     this.formatDropdown.onchange = function (e) {
       that.currentFormat = that.formatDropdown.options[that.formatDropdown.selectedIndex].value
       that.updateDownloadLink()
@@ -217,6 +218,7 @@ Processor.prototype = {
       element = document.createElement('button')
       element.innerHTML = 'Update'
       element.id = 'updateButton'
+      element.hidden = true
     }
     element.onclick = function (e) {
       that.rebuildSolids()
@@ -227,6 +229,8 @@ Processor.prototype = {
     var instantUpdateCheckbox = document.createElement('input')
     instantUpdateCheckbox.type = 'checkbox'
     instantUpdateCheckbox.id = 'instantUpdate'
+    instantUpdateCheckbox.checked = true;    
+    instantUpdateCheckbox.hidden = true 
     this.parametersdiv.appendChild(instantUpdateCheckbox)
 
     element = document.getElementById('instantUpdateLabel')
@@ -234,6 +238,7 @@ Processor.prototype = {
       element = document.createElement('label')
       element.innerHTML = 'Instant Update'
       element.id = 'instantUpdateLabel'
+      element.hidden = true
     }
     element.setAttribute('for', instantUpdateCheckbox.id)
     this.parametersdiv.appendChild(element)
@@ -344,7 +349,7 @@ Processor.prototype = {
 
   enableItems: function () {
     this.abortbutton.style.display = (this.state === 1) ? 'inline' : 'none'
-    this.formatDropdown.style.display = ((!this.hasOutputFile) && (this.viewedObject)) ? 'inline' : 'none'
+    //this.formatDropdown.style.display = ((!this.hasOutputFile) && (this.viewedObject)) ? 'inline' : 'none'
     this.generateOutputFileButton.style.display = ((!this.hasOutputFile) && (this.viewedObject)) ? 'inline' : 'none'
     this.downloadOutputFileLink.style.display = this.hasOutputFile ? 'inline' : 'none'
     this.parametersdiv.style.display = (this.paramControls.length > 0) ? 'inline-block' : 'none' // was 'block'
@@ -399,7 +404,7 @@ Processor.prototype = {
     if (typeof document !== 'undefined') {
       const statusMap = {
         error: data,
-        ready: 'Ready',
+        ready: ' ',
         aborted: 'Aborted.',
         busy: `${data} <img id=busy src='imgs/busy.gif'>`,
         loading: `Loading ${data} <img id=busy src='imgs/busy.gif'>`,
@@ -408,7 +413,7 @@ Processor.prototype = {
         saved: data,
         converting: `Converting ${data} <img id=busy src='imgs/busy.gif'>`,
         fetching: `Fetching ${data} <img id=busy src='imgs/busy.gif'>`,
-        rendering: `Rendering. Please wait <img id=busy src='imgs/busy.gif'>`
+        rendering: `Generating... <img id=busy src='imgs/busy.gif'>`
       }
       const content = statusMap[status] ? statusMap[status] : data
       if (status === 'error') {
@@ -507,14 +512,29 @@ Processor.prototype = {
         href.push(`${id}=${encodeURIComponent(parameters[id])}`)
         pretty.push(`${parameters[id]}`)
     }
+    var baseCode = href.join('&')
     href = this.baseurl + '#' + href.join('&');
     pretty = pretty.join('||');
 
-    var element = document.getElementById('urlDiv').innerHTML = 
-    `<a href="${href}">Custom Link</a><p><form action="/action_page.php">
-    <label for="fname">Etsy Code:</label>
-    <input type="text" id="fname" name="fname" readonly size=${pretty.length + 5} value="${pretty}"></p>`
+    var element = document.getElementById('urlLink').href =  href
+    var element = document.getElementById('designID').value =  baseCode
 
+    /*var element = document.getElementById('urlDiv').innerHTML = 
+    `<a href="${href}">Custom Link</a><p><form action="/action_page.php">
+    <p>
+    <textarea id="customLink"> ${href}</textarea>
+    <button onclick="copyText()">Copy URL</button>
+    <label for="fname">Etsy Code:</label>
+    <input type="text" id="fname" name="fname" readonly size=${pretty.length + 5} value="${pretty}"></p>
+    <script>
+    function copyText() {
+      var copyText = document.getElementById("customLink");
+      copyText.select();
+      copyText.setSelectionRange(0, 99999)
+      document.execCommand("copy");
+    }
+    </script>`
+*/
     this.state = 1 // processing
     let that = this
     function callback (err, objects) {
@@ -617,6 +637,15 @@ Processor.prototype = {
     return 'Download ' + ext.toUpperCase()
   },
 
+  createMultilineTextControl: function (definition) {
+    var control = document.createElement('textarea')
+    control.paramName = definition.name
+    control.paramType = definition.type
+    control.value = definition.initial
+    control.style = ''
+    return control
+  },
+
   createGroupControl: function (definition) {
     var control = document.createElement('title')
     control.paramName = definition.name
@@ -629,6 +658,7 @@ Processor.prototype = {
     }
     return control
   },
+
 
   createChoiceControl: function (definition, prevValue) {
     if (!('values' in definition)) {
@@ -665,7 +695,7 @@ Processor.prototype = {
         if (definition.initial === values[valueindex]) {
           selectedindex = valueindex
         }
-      }
+      } 
     }
     if (values.length > 0) {
       control.selectedIndex = selectedindex
@@ -764,6 +794,9 @@ Processor.prototype = {
           break
         case 'group':
           control = this.createGroupControl(paramdef)
+          break
+        case 'textbox':
+          control = this.createMultilineTextControl(paramdef)
           break
         default:
           control = this.createControl(paramdef, prevParamValues[paramdef.name])

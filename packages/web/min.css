@@ -9,7 +9,10 @@
   font-weight: bold;
   font-family: Helvetica, Arial, Sans;
   border: 0;
-  min-width: 410px;
+  min-width: 500px;
+  width: 600px;
+  margin: 0 auto;
+
 }
 
 #header {
@@ -22,8 +25,8 @@
   padding: 0px; /* not inherited */
 
   background: white;
-  width: 400px;
-  height: 300px;
+  
+  height: 450px;
 
   top: 0px;
   bottom: 0px;
@@ -45,11 +48,11 @@ canvas {
   border: thin solid rgb(200,200,200);
   border-radius: 0;     
   padding: 10px;
+  width: 95%;
 
   background: white;
   opacity: 0.8;
-  width: 375px;
-
+  text-align: center;
 }
 
 #parametersdiv table {
@@ -88,16 +91,19 @@ canvas {
   background: #fff;
   border: 1;
   padding: 1px;
+  font-family: Arial, Helvetica, sans-serif;
+
 }
 
-#updateButton {
-  margin:  5px; /* not inherited */
-  border:  thin solid Black; /* not inherited */
-  padding: 2px; /* not inherited */
-  border-radius: 4px;
-  background: white;
+#parametersdiv textarea {
+  resize: none;
+  width: 100%;
+  max-lines: 2;    
+}
 
-  margin-left: 1em;
+textarea {
+  resize: none;
+  max-lines: 5;    
 }
 
 #tail { 
@@ -108,3 +114,6 @@ canvas {
   vertical-align: middle;
 }
 
+.parameterstable {
+  margin: 0 auto;
+}
