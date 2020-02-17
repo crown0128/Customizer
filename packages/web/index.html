@@ -4,9 +4,6 @@
 
 == OpenJSCAD.org, Copyright (c) 2016-2017, Licensed under MIT License ==
    in conjunction with other libraries by various authors (see the individual files)
-
-Purpose:
-  This application provides an example of how to show JSCAD designs with minimal HTML and CSS.
 -->
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
@@ -24,18 +21,27 @@ Purpose:
     </div>
 
 <!-- setup display of the viewer, i.e. canvas -->
-    <div oncontextmenu="return false;" id="viewerContext" design-url="jscad/weightplateclock.jscad"></div>
+    <div oncontextmenu="return false;" id="viewerContext" design-url="jscad/weightplateclock.jscad" internalViewer=false></div>
+    <table>
+      <tr width=100%>
+        <td width=50%>
+          Item Price: <input readonly id="price">
+        </td>
+        <td width=50%>
+          <div id="statusdiv"></div>
+        </td>
+      </tr>
+    </table>
 
 <!-- setup display of the status, as required by OpenJSCAD.js -->
 <!-- set display: block to display this -->
     <div id="tail">
       <div id="parametersdiv"></div>
-      <div id="statusdiv"></div>
     </div>
     <div id="urlDiv">
-      <p><a href="" id="urlLink">Custom Link</a></p>  
+      <p><a href="" id="urlLink" hidden = true>Custom Link</a>Design ID</p>  
       <p><textarea readonly id="designID"></textarea></p>
-      <p><button  id="copyDesignID">Copy Design ID</button></p>
+      <p><button  id="copyDesignID">Copy ID to Clipboard</button></p>
       </div>
   </div>
 

@@ -46723,7 +46723,8 @@ function Processor(containerdiv, options) {
     openJsCadPath: '',
     useAsync: false,
     useSync: true,
-    viewer: {}
+    viewer: {},
+    internalViewer: false
     // apply all options found
   };for (var x in this.opts) {
     if (x in options) this.opts[x] = options[x];
@@ -46896,7 +46897,9 @@ Processor.prototype = {
     this.generateOutputFileButton.onclick = function (e) {
       that.generateOutputFile();
     };
-    this.statusbuttons.appendChild(this.generateOutputFileButton);
+    if (this.opts.internalViewer) {
+      this.statusbuttons.appendChild(this.generateOutputFileButton);
+    }
     this.downloadOutputFileLink = document.createElement('a');
     this.downloadOutputFileLink.className = 'downloadOutputFileLink'; // so we can css it
     this.statusbuttons.appendChild(this.downloadOutputFileLink);
@@ -47216,32 +47219,15 @@ Processor.prototype = {
     var href = [];
     var pretty = [];
     for (var id in parameters) {
-      href.push(id + '=' + encodeURIComponent(parameters[id]));
-      pretty.push('' + parameters[id]);
+      if (!id.includes('Internal')) href.push(id + '=' + encodeURIComponent(parameters[id]));
     }
     var baseCode = href.join('&');
-    href = this.baseurl + '#' + href.join('&');
-    pretty = pretty.join('||');
+    var fullURL = this.baseurl + '#' + baseCode;
+    pretty = href.join('||');
 
-    var element = document.getElementById('urlLink').href = href;
-    var element = document.getElementById('designID').innerHTML = baseCode;
+    var element = document.getElementById('urlLink').href = fullURL;
+    var element = document.getElementById('designID').value = pretty;
 
-    /*var element = document.getElementById('urlDiv').innerHTML = 
-    `<a href="${href}">Custom Link</a><p><form action="/action_page.php">
-    <p>
-    <textarea id="customLink"> ${href}</textarea>
-    <button onclick="copyText()">Copy URL</button>
-    <label for="fname">Etsy Code:</label>
-    <input type="text" id="fname" name="fname" readonly size=${pretty.length + 5} value="${pretty}"></p>
-    <script>
-    function copyText() {
-      var copyText = document.getElementById("customLink");
-      copyText.select();
-      copyText.setSelectionRange(0, 99999)
-      document.execCommand("copy");
-    }
-    </script>`
-    */
     this.state = 1; // processing
     var that = this;
     function callback(err, objects) {
@@ -47389,6 +47375,7 @@ Processor.prototype = {
       var option = document.createElement('option');
       option.value = values[valueindex];
       option.text = captions[valueindex];
+      option.style = '{color: yellow;}';
       control.add(option);
       if (prevValue !== undefined) {
         if (prevValue === values[valueindex]) {
@@ -47607,6 +47594,7 @@ function init() {
 
   var viewer = document.getElementById('viewerContext');
   var design = viewer.getAttribute('design-url');
+  var internalViewerMode = viewer.getAttribute('internalViewer');
 
   gProcessor = new Processor(viewer, { viewer: { plate: { size: 0,
         m: { i: 1,
@@ -47616,13 +47604,13 @@ function init() {
           color: { r: 0.5, g: 0.5, b: 0.5, a: 0.5 }
         }
       },
-      camera: { position: { x: 0, y: 0, z: 500 },
+      camera: { position: { x: 0, y: 0, z: 700 },
         clip: { min: 0.5, max: 3000 },
-        angle: { x: -29, y: 0, z: 0 }
+        angle: { x: -4, y: 25, z: 0 }
       },
       axis: { draw: false
       }
-    }
+    }, internalViewer: internalViewerMode == 'true'
   });
 
   document.getElementById('copyDesignID').addEventListener('click', function (event) {
@@ -47877,7 +47865,7 @@ LightGLEngine.prototype = {
     var baseInteractions = baseInteractionsFromEvents(element);
     var gestures = pointerGestures(baseInteractions);
 
-    var rotateFactor = 0.4;
+    var rotateFactor = 0.7;
     var panFactor = 0.005;
     var zoomFactor = 1.085;
 
@@ -47892,11 +47880,12 @@ LightGLEngine.prototype = {
 
       var button = originalEvents[0].which;
 
-      if (altKey || button === 3) // ROTATE X,Y (ALT or right mouse button)
-        {
-          _this.angleY += delta.x * rotateFactor;
-          _this.angleX += delta.y * rotateFactor;
-        } else if (shiftKey || button === 2) {
+      /*if ()                     // ROTATE X,Y (ALT or right mouse button)
+      {
+        _this.angleY += delta.x * rotateFactor
+        _this.angleX += delta.y * rotateFactor
+      } else */
+      if (altKey || button === 3 || shiftKey || button === 2) {
         // PAN  (SHIFT or middle mouse button)
         _this.viewpointX -= panFactor * delta.x * _this.viewpointZ;
         _this.viewpointY -= panFactor * delta.y * _this.viewpointZ;
@@ -47908,7 +47897,7 @@ LightGLEngine.prototype = {
         _this.viewpointZ += zoom;
         _this.viewpointZ = Math.min(Math.max(_this.viewpointZ, _this.options.camera.clip.min), _this.options.camera.clip.max);
       } else {
-        _this.angleZ -= delta.x * rotateFactor;
+        _this.angleY -= delta.x * rotateFactor;
         _this.angleX += delta.y * rotateFactor;
       }
 

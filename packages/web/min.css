@@ -10,8 +10,7 @@
   font-family: Helvetica, Arial, Sans;
   border: 0;
   min-width: 500px;
-  width: 600px;
-  margin: 0 auto;
+  width: 500px;
 
 }
 
@@ -67,23 +66,30 @@ canvas {
   margin:  0px; /* not inherited */
   border:  0px none gray; /* not inherited */
   padding: 5px; /* not inherited */
-
+  text-align: center;
   font-weight: bold;
+  margin: 0 auto;
+
 }
 
 #parametersdiv th.caption {
-  text-decoration: underline;
+  font-weight: bold;
+  font-size: large;
+  text-align: left;
 }
 
 #parametersdiv td.caption {
   text-align: right;
-  font-weight: bold;
 }
 
 #parametersdiv td {
   margin:  0px; /* not inherited */
   border:  0px none gray; /* not inherited */
   padding: 2px; /* not inherited */
+}
+
+#statusdiv {
+  text-align: right;
 }
 
 #parametersdiv input, #parametersdiv textarea, #parametersdiv select {
@@ -101,10 +107,12 @@ canvas {
   max-lines: 2;    
 }
 
-textarea {
+
+#designID {
   resize: none;
-  max-lines: 5;    
+  width: 95%;    
 }
+
 
 #tail { 
   margin: 5px; /* not inherited */

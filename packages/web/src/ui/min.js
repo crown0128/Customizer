@@ -16,6 +16,7 @@ function init () {
 
   let viewer = document.getElementById('viewerContext')
   let design = viewer.getAttribute('design-url')
+  var internalViewerMode = viewer.getAttribute('internalViewer')
 
   gProcessor = new Processor(viewer,
     { viewer: { plate: {size: 0,
@@ -26,13 +27,13 @@ function init () {
         color: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
       }
     },
-      camera: {position: {x: 0, y: 0, z:500},
+      camera: {position: {x: 0, y: 0, z:700},
         clip: {min: 0.5, max: 3000},
-        angle: {x:-29, y:0, z:0}
+        angle: {x:-4, y:25, z:0}
       },
       axis: {draw: false
       }
-    }
+    }, internalViewer: (internalViewerMode == 'true')
     })
     
     document.getElementById('copyDesignID').addEventListener('click', function (event) {

@@ -24,7 +24,8 @@ function Processor (containerdiv, options) {
     openJsCadPath: '',
     useAsync: false,
     useSync: true,
-    viewer: {}
+    viewer: {},
+    internalViewer: false
   }
   // apply all options found
   for (var x in this.opts) {
@@ -198,11 +199,14 @@ Processor.prototype = {
     this.generateOutputFileButton.onclick = function (e) {
       that.generateOutputFile()
     }
-    this.statusbuttons.appendChild(this.generateOutputFileButton)
-    this.downloadOutputFileLink = document.createElement('a')
-    this.downloadOutputFileLink.className = 'downloadOutputFileLink' // so we can css it
-    this.statusbuttons.appendChild(this.downloadOutputFileLink)
-
+    if(this.opts.internalViewer)
+    {
+      this.statusbuttons.appendChild(this.generateOutputFileButton)
+    }
+      this.downloadOutputFileLink = document.createElement('a')
+      this.downloadOutputFileLink.className = 'downloadOutputFileLink' // so we can css it
+      this.statusbuttons.appendChild(this.downloadOutputFileLink)
+    
     this.parametersdiv = this.containerdiv.parentElement.querySelector('div#parametersdiv')
     if (!this.parametersdiv) {
       this.parametersdiv = document.createElement('div')
@@ -509,32 +513,16 @@ Processor.prototype = {
     var href = [];
     var pretty = [];
     for (var id in parameters) {
+      if(!id.includes('Internal'))
         href.push(`${id}=${encodeURIComponent(parameters[id])}`)
-        pretty.push(`${parameters[id]}`)
     }
     var baseCode = href.join('&')
-    href = this.baseurl + '#' + href.join('&');
-    pretty = pretty.join('||');
+    var fullURL = this.baseurl + '#' + baseCode;
+    pretty = href.join('||');
 
-    var element = document.getElementById('urlLink').href =  href
-    var element = document.getElementById('designID').value =  baseCode
+    var element = document.getElementById('urlLink').href =  fullURL
+    var element = document.getElementById('designID').value =  pretty
 
-    /*var element = document.getElementById('urlDiv').innerHTML = 
-    `<a href="${href}">Custom Link</a><p><form action="/action_page.php">
-    <p>
-    <textarea id="customLink"> ${href}</textarea>
-    <button onclick="copyText()">Copy URL</button>
-    <label for="fname">Etsy Code:</label>
-    <input type="text" id="fname" name="fname" readonly size=${pretty.length + 5} value="${pretty}"></p>
-    <script>
-    function copyText() {
-      var copyText = document.getElementById("customLink");
-      copyText.select();
-      copyText.setSelectionRange(0, 99999)
-      document.execCommand("copy");
-    }
-    </script>`
-*/
     this.state = 1 // processing
     let that = this
     function callback (err, objects) {
@@ -682,6 +670,8 @@ Processor.prototype = {
       var option = document.createElement('option')
       option.value = values[valueindex]
       option.text = captions[valueindex]
+      option.style = 
+        '{color: yellow;}'
       control.add(option)
       if (prevValue !== undefined) {
         if (prevValue === values[valueindex]) {

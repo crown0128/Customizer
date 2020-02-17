@@ -149,7 +149,7 @@ LightGLEngine.prototype = {
     const baseInteractions = baseInteractionsFromEvents(element)
     const gestures = pointerGestures(baseInteractions)
 
-    const rotateFactor = 0.4
+    const rotateFactor = 0.7
     const panFactor = 0.005
     const zoomFactor = 1.085
 
@@ -161,11 +161,12 @@ LightGLEngine.prototype = {
         const {altKey, shiftKey, ctrlKey, metaKey} = originalEvents[0]
         const button = originalEvents[0].which
 
-        if (altKey || button === 3)                     // ROTATE X,Y (ALT or right mouse button)
+        /*if ()                     // ROTATE X,Y (ALT or right mouse button)
         {
           _this.angleY += delta.x * rotateFactor
           _this.angleX += delta.y * rotateFactor
-        } else if (shiftKey || button === 2) {            // PAN  (SHIFT or middle mouse button)
+        } else */
+        if ( altKey || button === 3 || shiftKey || button === 2) {            // PAN  (SHIFT or middle mouse button)
           _this.viewpointX -= panFactor * delta.x * _this.viewpointZ
           _this.viewpointY -= panFactor * delta.y * _this.viewpointZ
         } else if (ctrlKey || metaKey) {                   // ZOOM IN/OUT
@@ -175,7 +176,7 @@ LightGLEngine.prototype = {
           _this.viewpointZ += zoom
           _this.viewpointZ = Math.min(Math.max(_this.viewpointZ, _this.options.camera.clip.min), _this.options.camera.clip.max)
         } else {
-          _this.angleZ -= delta.x * rotateFactor
+          _this.angleY -= delta.x * rotateFactor
           _this.angleX += delta.y * rotateFactor
         }
 
