@@ -2,7 +2,7 @@
 
 function getParameterDefinitions () {
   return [
-    {name: 'Configuration', type: 'group', caption: 'Customization Options'},
+    {name: 'Design', type: 'group', caption: 'Design Options'},
     {name: 'TopText', initial: 'BARBELL', type: 'text', caption: 'Top Text', maxLength: 14},
     {name: 'BottomText', initial: 'STANDARD', type: 'text', caption: 'Bottom Text', maxLength: 14},
     {name: 'LeftText', initial: '45\nLBS', type: 'textbox', caption: 'Left Text'},
@@ -19,9 +19,9 @@ function getParameterDefinitions () {
   },
     {name: 'colorInternal',
     type: 'choice',
-    caption: 'Clock Diameter',
+    caption: 'Color',
     values: ['#dedede', '#1c1c1c'],
-    captions: ['Silver', 'Black'],
+    captions: ['Gray', 'Black'],
     initial: '15'
     },
     {name: 'bananaInternal', checked: false, type: 'checkbox', caption: 'Banana for Scale'},

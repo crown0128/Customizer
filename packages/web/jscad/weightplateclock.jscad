@@ -19,9 +19,9 @@ function getParameterDefinitions () {
   },
     {name: 'colorInternal',
     type: 'choice',
-    caption: 'Clock Diameter',
+    caption: 'Color',
     values: ['#dedede', '#1c1c1c'],
-    captions: ['Silver', 'Black'],
+    captions: ['Gray', 'Black'],
     initial: '15'
     },
     {name: 'showKitInternal', checked: true, type: 'checkbox', caption: 'Show Clock Hands'},

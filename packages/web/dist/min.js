@@ -47223,7 +47223,7 @@ Processor.prototype = {
     }
     var baseCode = href.join('&');
     var fullURL = this.baseurl + '#' + baseCode;
-    pretty = href.join('||');
+    pretty = href.join('|');
 
     var element = document.getElementById('urlLink').href = fullURL;
     var element = document.getElementById('designID').value = pretty;
@@ -47590,10 +47590,6 @@ var gProcessor = null;
 function init() {
   var versionText = 'OpenJSCAD.org Version ' + version;
   console.log(versionText);
-  if (navigator.userAgent.search("MSIE") >= 0) {
-    document.body.innerHTML = "not supported";
-    return;
-  }
 
   // Show all exceptions to the user: // WARNING !! this is not practical at dev time
   AlertUserOfUncaughtExceptions();

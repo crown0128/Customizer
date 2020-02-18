@@ -518,7 +518,7 @@ Processor.prototype = {
     }
     var baseCode = href.join('&')
     var fullURL = this.baseurl + '#' + baseCode;
-    pretty = href.join('||');
+    pretty = href.join('|');
 
     var element = document.getElementById('urlLink').href =  fullURL
     var element = document.getElementById('designID').value =  pretty
