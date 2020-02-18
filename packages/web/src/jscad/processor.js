@@ -417,7 +417,7 @@ Processor.prototype = {
         saved: data,
         converting: `Converting ${data} <img id=busy src='imgs/busy.gif'>`,
         fetching: `Fetching ${data} <img id=busy src='imgs/busy.gif'>`,
-        rendering: `Generating... <img id=busy src='imgs/busy.gif'>`
+        rendering: `Updating... <img id=busy src='imgs/busy.gif'>`
       }
       const content = statusMap[status] ? statusMap[status] : data
       if (status === 'error') {
@@ -740,8 +740,10 @@ Processor.prototype = {
     // set the control type
     control.setAttribute('type', c_type.control)
     // set name and type for obtaining values
-    control.paramName = definition.name
-    control.paramType = definition.type
+    control.paramName = definition.name;
+    control.paramType = definition.type;
+    control.className = definition.type;
+    control.spellcheck="false";
     // determine initial value of control
     if (prevValue !== undefined) {
       control.value = prevValue

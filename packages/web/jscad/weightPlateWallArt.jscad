@@ -12,7 +12,7 @@ function getParameterDefinitions () {
     {name: 'displayOptions', type: 'group', caption: 'Render Options'},
     {name: 'sizeInternal',
     type: 'choice',
-    caption: 'Clock Diameter',
+    caption: 'Diameter',
     values: ['11', '15', '18'],
     captions: ['11"', '15"', '18"'],
     initial: '15'
@@ -24,11 +24,11 @@ function getParameterDefinitions () {
     captions: ['Silver', 'Black'],
     initial: '15'
     },
-    {name: 'showKitInternal', checked: true, type: 'checkbox', caption: 'Show Clock Hands'},
     {name: 'bananaInternal', checked: false, type: 'checkbox', caption: 'Banana for Scale'},
     //{name: 'color', type: 'color', initial: '#0F0F0F', caption: 'Color?'}
   ];
 }
+
 
 
 function main (param) {
@@ -37,7 +37,7 @@ function main (param) {
   include("/../base.jscad");
 
 
-  var item = weightPlateBase(param, ClockMode = true);
+  var item = weightPlateBase(param,  ClockMode = false);
   if(param.showKitInternal) {
     item = item.union(clockAssm(param.sizeInternal).translate([-102,-47,-81])); }
   item = allItemBase(param, item);

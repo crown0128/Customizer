@@ -47122,7 +47122,7 @@ Processor.prototype = {
         saved: data,
         converting: 'Converting ' + data + ' <img id=busy src=\'imgs/busy.gif\'>',
         fetching: 'Fetching ' + data + ' <img id=busy src=\'imgs/busy.gif\'>',
-        rendering: 'Generating... <img id=busy src=\'imgs/busy.gif\'>'
+        rendering: 'Updating... <img id=busy src=\'imgs/busy.gif\'>'
       };
       var content = statusMap[status] ? statusMap[status] : data;
       if (status === 'error') {
@@ -47434,6 +47434,8 @@ Processor.prototype = {
     // set name and type for obtaining values
     control.paramName = definition.name;
     control.paramType = definition.type;
+    control.className = definition.type;
+    control.spellcheck = "false";
     // determine initial value of control
     if (prevValue !== undefined) {
       control.value = prevValue;
@@ -47588,6 +47590,10 @@ var gProcessor = null;
 function init() {
   var versionText = 'OpenJSCAD.org Version ' + version;
   console.log(versionText);
+  if (navigator.userAgent.search("MSIE") >= 0) {
+    document.body.innerHTML = "not supported";
+    return;
+  }
 
   // Show all exceptions to the user: // WARNING !! this is not practical at dev time
   AlertUserOfUncaughtExceptions();
