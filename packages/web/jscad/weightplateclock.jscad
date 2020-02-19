@@ -3,8 +3,8 @@
 function getParameterDefinitions () {
   return [
     {name: 'Configuration', type: 'group', caption: 'Design Options'},
-    {name: 'TopText', initial: 'BARBELL', type: 'text', caption: 'Top Text', maxLength: 14},
-    {name: 'BottomText', initial: 'STANDARD', type: 'text', caption: 'Bottom Text', maxLength: 14},
+    {name: 'TopText', initial: 'BARBELL', type: 'textbox', caption: 'Top Text', maxLength: 14},
+    {name: 'BottomText', initial: 'STANDARD', type: 'textbox', caption: 'Bottom Text', maxLength: 14},
     {name: 'LeftText', initial: '45\nLBS', type: 'textbox', caption: 'Left Text'},
     {name: 'RightText', initial: '20.4\nKGS', type: 'textbox', caption: 'Right Text'},
 
@@ -36,10 +36,9 @@ function main (param) {
   include("/../clockKit.jscad");
   include("/../base.jscad");
 
-
   var item = weightPlateBase(param, ClockMode = true);
   if(param.showKitInternal) {
-    item = item.union(clockAssm(param.sizeInternal).translate([-102,-47,-81])); }
+    item = item.union(clockAssm(param.sizeInternal, param.colorInternal == '#1c1c1c').translate([-102,-47,-81])); }
   item = allItemBase(param, item);
   return item;
 }

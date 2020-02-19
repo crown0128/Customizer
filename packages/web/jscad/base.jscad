@@ -6,3 +6,12 @@ allItemBase = function allItemBase (param, item) {
       }
       return item
 }
+
+logMsg = function log(msg) {
+
+    var debugControl = document.getElementById('debug') 
+    if(debugControl !== null)
+      debugControl.innerHTML += '<br>' + msg;
+    }
+    
+    

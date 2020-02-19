@@ -3,8 +3,8 @@
 function getParameterDefinitions () {
   return [
     {name: 'Design', type: 'group', caption: 'Design Options'},
-    {name: 'TopText', initial: 'BARBELL', type: 'text', caption: 'Top Text', maxLength: 14},
-    {name: 'BottomText', initial: 'STANDARD', type: 'text', caption: 'Bottom Text', maxLength: 14},
+    {name: 'TopText', initial: 'BARBELL', type: 'textbox', caption: 'Top Text', maxLength: 14},
+    {name: 'BottomText', initial: 'STANDARD', type: 'textbox', caption: 'Bottom Text', maxLength: 14},
     {name: 'LeftText', initial: '45\nLBS', type: 'textbox', caption: 'Left Text'},
     {name: 'RightText', initial: '20.4\nKGS', type: 'textbox', caption: 'Right Text'},
 

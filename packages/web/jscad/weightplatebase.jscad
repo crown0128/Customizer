@@ -39,8 +39,8 @@ var textHeight = 4;
 
 if(param.LeftText.trim() !== ''){allObjects.push(linear_extrude({height: textHeight}, straightText(param.LeftText, textSize = textSize)).setColor(textColor).translate([-110,-7.5,0]));}
 if(param.RightText.trim() !== ''){allObjects.push(linear_extrude({height: textHeight}, straightText(param.RightText, textSize = textSize)).setColor(textColor).translate([110,-7.5,0]))}
-if(param.TopText.trim() !== ''){allObjects.push(linear_extrude({height: textHeight}, revolveText(param.TopText, 85, 130, true, textSize = textSize)).setColor(textColor));}
-if(param.BottomText.trim() !== ''){allObjects.push(linear_extrude({height: textHeight}, revolveText(param.BottomText, 85, 130, false, textSize = textSize)).setColor(textColor));}
+if(param.TopText.trim() !== ''){allObjects.push(linear_extrude({height: textHeight}, revolveMultilineText(param.TopText, 85, 130, true, textSize = textSize)).setColor(textColor));}
+if(param.BottomText.trim() !== ''){allObjects.push(linear_extrude({height: textHeight}, revolveMultilineText(param.BottomText, 85, 130, false, textSize = textSize)).setColor(textColor));}
 if(ClockMode) {
   cutObjects.push(clockTicks().setColor(textColor));
   unscaledCutObjects.push(cylinder({r: 4, h: 30, center: true}).setColor(textColor)) 
@@ -80,19 +80,23 @@ function straightText(text, textSize = 20, maxlines = 3, maxCharsPerLine = 7)
   });
   return union(allText);
 } 
-/*
-function revolveMultilineText(text, textAngle = 90, radius = 180, invert = true, textSize = 28)
-{
-  var textArray = text.split('\n').slice(0,maxlines)
-  var allText = [];
-  var lineRadius = radius - (textArray - 1)/2*30
-  textArray.forEach((word) => {
-    revolveText(text, textAngle, radius, invert, textSize)
+
+function revolveMultilineText(text, textAngle = 90, radius = 180, invert = true, textSize = 28) {
+  var textArray = text.split('\n');
+  if(textArray.length == 1)  {
+    return revolveText(text, textAngle, radius, invert, textSize);
   }
+  var allText = [];
+  var lineRadius = radius + (textArray.length - 1)/2*textSize -10
+  textArray.forEach((word) => {
+    allText.push(revolveText(word, textAngle, lineRadius, invert, textSize));
+    lineRadius -= textSize
+  });
+  return union(allText)
 }
 
-*/
-function revolveText(text, textAngle = 90, radius = 180, invert = true, textSize = 28)
+
+function revolveText(text, textAngle = 90, radius = 130, invert = true, textSize = 28)
 {
   var invertVal = invert?1:-1
   var totalCharLen = getTotalCharLen(text, textSize);
@@ -100,7 +104,7 @@ function revolveText(text, textAngle = 90, radius = 180, invert = true, textSize
   var iRadius = radius-invertVal*10 + (28-textSize)/2;
 
 
-  spanAngle = min(textAngle, getTextWidth(text, textSize) /2);
+  spanAngle = min(textAngle, getTextWidth(text, textSize) /2 * 130/radius);
   
   var charLen = 0;
   for (var x = 0; x < text.length; x++)
@@ -147,15 +151,23 @@ function getText(text, textSize){
 }
 
 
-function getTotalCharLen(text, textSize)
+function getTotalCharLen(text, textSize, secondLineFactor = .2)
 {
-  var totalCharLen = 0;
-  for (var x = 0; x < text.length; x++)
-  {
-    var c = text.charAt(x);
-    totalCharLen += getCharWidth(c, textSize);
-  }
-  return totalCharLen;
+  var totalCharLens = [];
+  var lineNum = 0
+  text.split('\n').forEach((line) => {
+      var totalCharLen = 0
+      for (var x = 0; x < line.length; x++)
+      {
+        var c = line.charAt(x);
+        totalCharLen += getCharWidth(c, textSize);
+      }
+      totalCharLens.push(totalCharLen * (1 + secondLineFactor * lineNum))
+     // console.log('total len of ' + line + ':' + totalCharLen)
+      lineNum++;
+    })
+  //  console.log('max len of ' + text + ':' + Math.max(...totalCharLens))
+  return Math.max(...totalCharLens);
 
 }
 
@@ -184,6 +196,7 @@ function getTextWidthBase(c, textSize = 28, includeSpace) {
   }
 
 }
+
 
 
     

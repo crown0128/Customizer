@@ -1,26 +1,26 @@
-clockAssm = function clockAssm(clockSize = 11) {
+clockAssm = function clockAssm(clockSize = 11, lightHands = false) {
     var parts = [];
-
+    var handColor = lightHands?[200,200,200]:[0,0,0]
     parts.push(kitBase());
     parts.push(kitSilver());
     if(clockSize == 11 || clockSize == 15) {
-        parts.push(hourHand());
+        parts.push(hourHand(handColor));
         parts.push(secondHand());
     }
     if(clockSize == 11) {
-        parts.push(minuteHand_11()); 
+        parts.push(minuteHand_11(handColor)); 
     }
     if(clockSize == 15) {
-        parts.push(minuteHand_15()); 
+        parts.push(minuteHand_15(handColor)); 
     }
     if(clockSize == 18) {        
-        parts.push(hourHand_18());
-        parts.push(minuteHand_18()); 
+        parts.push(hourHand_18(handColor));
+        parts.push(minuteHand_18(handColor)); 
     }
     return union(parts);
 }
 
-  function kitSilver() { return union(
+  function kitSilver(handColor) { return union(
 // objects: 1
 // object #undefined: triangles: 398
 polyhedron({ points: [
@@ -2314,7 +2314,7 @@ polyhedron({ points: [
   [513,514,515]] })
 ).setColor([0,0,0]);; }
 
-  function hourHand() { return union(
+  function hourHand(handColor) { return union(
 // objects: 1
 // object #undefined: triangles: 132
 polyhedron({ points: [
@@ -2847,9 +2847,9 @@ polyhedron({ points: [
   [387,388,389],
   [390,391,392],
   [393,394,395]] })
-).setColor([0,0,0]);; }
+).setColor(handColor);; }
 
-function hourHand_18() { return union(
+function hourHand_18(handColor) { return union(
     // objects: 1
     // object #undefined: triangles: 132
     polyhedron({ points: [
@@ -3318,9 +3318,9 @@ function hourHand_18() { return union(
         [339,340,341],
         [342,343,344],
         [345,346,347]] })
-    ).translate([-60,0,0]).setColor([0,0,0]);; }
+    ).translate([-60,0,0]).setColor(handColor);; }
 
-function minuteHand_18() { return union(
+function minuteHand_18(handColor) { return union(
     // objects: 1
     // object #undefined: triangles: 116
     polyhedron({ points: [
@@ -3788,9 +3788,9 @@ function minuteHand_18() { return union(
         [336,337,338],
         [339,340,341],
         [342,343,344],
-        [345,346,347]] })).translate([-60,0,0]).setColor([0,0,0]);
+        [345,346,347]] })).translate([-60,0,0]).setColor(handColor);
      }
-  function minuteHand_15() { return union(
+  function minuteHand_15(handColor) { return union(
 // objects: 1
 // object #undefined: triangles: 116
 polyhedron({ points: [
@@ -4259,9 +4259,9 @@ polyhedron({ points: [
   [339,340,341],
   [342,343,344],
   [345,346,347]] })
-).setColor([0,0,0]); }
+).setColor(handColor); }
 
-function minuteHand_11() { return union(
+function minuteHand_11(handColor) { return union(
 polyhedron({ points: [
     [96.27593231201172,45.94582748413086,99.22216033935547],
     [95.90655517578125,45.59632110595703,99.22216033935547],
@@ -4760,7 +4760,7 @@ polyhedron({ points: [
     [363,364,365],
     [366,367,368],
     [369,370,371]] })
-  ).setColor([0,0,0]).translate([9,0,0]); }
+  ).setColor(handColor).translate([9,0,0]); }
 //
   function secondHand() { return union(
 // objects: 1
