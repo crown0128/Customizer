@@ -1,4 +1,4 @@
-  weightPlate = function weightPlateBase() { return union(
+  weightPlate = function weightPlateBaseSTL() { return union(
     polyhedron({ points: [
       [160.3802947998047,185.57716369628906,5],
       [159.55799865722656,179.85800170898438,5],

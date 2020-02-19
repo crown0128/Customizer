@@ -30,7 +30,7 @@ if(priceControl !== null) {
   var p = []; // our stack of extruded line segments
 
   var plateColor =   html2rgb(param.colorInternal)
-  var textColor = plateColor.map((a, i) => a + .04);
+  var textColor = plateColor.map((a, i) => a + .05);
 
   var maxTextLength = max(getTotalCharLen(param.TopText), getTotalCharLen(param.BottomText))
   var textSize = min(28, 5000/maxTextLength)
@@ -79,9 +79,19 @@ function straightText(text, textSize = 20, maxlines = 3, maxCharsPerLine = 7)
   }
   });
   return union(allText);
-
 } 
+/*
+function revolveMultilineText(text, textAngle = 90, radius = 180, invert = true, textSize = 28)
+{
+  var textArray = text.split('\n').slice(0,maxlines)
+  var allText = [];
+  var lineRadius = radius - (textArray - 1)/2*30
+  textArray.forEach((word) => {
+    revolveText(text, textAngle, radius, invert, textSize)
+  }
+}
 
+*/
 function revolveText(text, textAngle = 90, radius = 180, invert = true, textSize = 28)
 {
   var invertVal = invert?1:-1

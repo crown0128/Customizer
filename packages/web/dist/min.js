@@ -46899,6 +46899,7 @@ Processor.prototype = {
     };
     if (this.opts.internalViewer) {
       this.statusbuttons.appendChild(this.generateOutputFileButton);
+      document.getElementById('internal').hidden = false;
     }
     this.downloadOutputFileLink = document.createElement('a');
     this.downloadOutputFileLink.className = 'downloadOutputFileLink'; // so we can css it
@@ -47215,6 +47216,7 @@ Processor.prototype = {
     var script = this.getFullScript();
     var fullurl = this.includePathBaseUrl ? this.includePathBaseUrl + this.filename : this.filename;
     var options = { memFs: this.memFs };
+    var fullUrlNoParams = location.protocol + '//' + location.host + location.pathname;
 
     var href = [];
     var pretty = [];
@@ -47222,7 +47224,7 @@ Processor.prototype = {
       if (!id.includes('Internal')) href.push(id + '=' + encodeURIComponent(parameters[id]));
     }
     var baseCode = href.join('&');
-    var fullURL = this.baseurl + '#' + baseCode;
+    var fullURL = fullUrlNoParams + '#' + baseCode;
     pretty = href.join('|');
 
     var element = document.getElementById('urlLink').href = fullURL;

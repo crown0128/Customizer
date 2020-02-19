@@ -10,51 +10,51 @@
   <meta name="viewport" content="width=device-width">
   <title>Customizer</title>
   <link rel="stylesheet" href="min.css" type="text/css">
+
 </head>
+
 
 <body>
   <script src="dist/min.js"></script>
-
+<div id="mainUI">
 <!-- setup display of the errors as required by OpenJSCAD.js -->
   <div class="jscad-container">
-    <div id="header">
-      <div id="errordiv"></div>
-    </div>
+    <div id="statusdiv"></div>
+
 
 <!-- setup display of the viewer, i.e. canvas -->
-    <div id="viewerContext" design-url="jscad/weightPlateWallArt.jscad" internalViewer=false></div>
-    <div id="statusdiv"></div>
+    <div oncontextmenu="return false;" class="column" div id="viewerContext" design-url="jscad/weightPlateWallArt.jscad" internalViewer=false></div>
+    
+        
 
 
 <!-- setup display of the status, as required by OpenJSCAD.js -->
 <!-- set display: block to display this -->
-    <div id="tail">
-      <div id="parametersdiv"></div>
+    <div class="column" id="tail">
+        <div id="parametersdiv"></div> 
     </div>
-    <div id="urlDiv">
-      <p><a href="" id="urlLink" hidden = true>Custom Link</a>Design ID</p>  
-      <table width= "100%">
-        <tr width= "100%">
-          <td width>
-            <textarea readonly id="designID"></textarea>
-          </td>
-          <td width = "18px">
-            <button  id="copyDesignID"></button>
-          </td>
-        </tr>
-      </table>
-      <p>How to order this item:
-          <ol>             
-              <li>Once everything is just right, copy your unique design ID above.</li>
-              <li>Click the etsy listing below, paste the design ID in the personalization field.</li>
-              <li>In etsy, select any other options such as item size, then complete your order.</li>
-              <li>We'll 3D print it exactly how you see it!</li>
-          </ol>
-      </p>
-        <a href="https://www.etsy.com/listing/746890483/weight-plate-wall-art-customizable-3d">Weight Plate Wall Art Listing on Etsy</a>
-      </div>
-  </div>
+</div>
 
+    <div id="urlDiv">
+        <div id="internal" hidden = true>  <!-- only shown for internal viewer -->
+        <p><a href="" id="urlLink">Custom Link</a></p>  
+        </div>
+        <div id='postUI'>
+            <p>Design ID: <textarea readonly id="designID"></textarea></p>
+            <p><button  id="copyDesignID">Copy Design ID</button></p>
+
+        <p>How to order this item:
+            <ol>             
+                <li>Once everything is just right, copy your unique design ID above.</li>
+                <li>Click the Etsy listing below, paste the design ID in the personalization field.</li>
+                <li>In Etsy, select any other options such as item size, then complete your order.</li>
+                <li>We'll 3D print it exactly how you see it!</li>
+            </ol>
+        </p>
+            <a href="https://www.etsy.com/listing/746890483/weight-plate-wall-art-customizable-3d">Weight Plate Wall Art Listing on Etsy</a>
+        </div>
+    </div>
+</div>
 </body>
 
 </html>
