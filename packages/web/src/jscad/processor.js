@@ -627,11 +627,14 @@ Processor.prototype = {
     return 'Download ' + ext.toUpperCase()
   },
 
-  createMultilineTextControl: function (definition) {
+  createMultilineTextControl: function (definition, prevValue) {
     var control = document.createElement('textarea')
     control.paramName = definition.name
     control.paramType = definition.type
-    control.value = definition.initial
+    if (prevValue !== undefined) {
+      control.value  = prevValue;}
+    else
+      control.value = definition.initial;   
     control.style = ''
     return control
   },
@@ -790,7 +793,7 @@ Processor.prototype = {
           control = this.createGroupControl(paramdef)
           break
         case 'textbox':
-          control = this.createMultilineTextControl(paramdef)
+          control = this.createMultilineTextControl(paramdef, prevParamValues[paramdef.name])
           break
         default:
           control = this.createControl(paramdef, prevParamValues[paramdef.name])
