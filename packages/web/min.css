@@ -162,7 +162,6 @@ canvas {
 #parametersdiv textarea {
   resize: none;
   width: 100%;
-  max-lines: 2;    
 }
 
 

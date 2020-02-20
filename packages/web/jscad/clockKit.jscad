@@ -1,6 +1,6 @@
 clockAssm = function clockAssm(clockSize = 11, lightHands = false) {
     var parts = [];
-    var handColor = lightHands?[200,200,200]:[0,0,0]
+    var handColor = lightHands?[1,1,1]:[0,0,0]
     parts.push(kitBase());
     parts.push(kitSilver());
     if(clockSize == 11 || clockSize == 15) {

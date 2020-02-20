@@ -47340,7 +47340,8 @@ Processor.prototype = {
     if (prevValue !== undefined) {
       control.value = prevValue;
     } else control.value = definition.initial;
-    control.style = '';
+    var height = definition.height;
+    if (height !== null) control.style = 'height: ' + height + 'em';
     return control;
   },
 
@@ -47420,6 +47421,12 @@ Processor.prototype = {
             if (p_name === 'checked') {
               // setAttribute() only accepts strings
               control.checked = definition.checked;
+              if (this.opts.internalViewer) {
+                var internalDefault = definition.internalDefault;
+                if (internalDefault !== null && control !== null) {
+                  control.checked = internalDefault;
+                }
+              }
             } else {
               control.setAttribute(p_name, definition[p_name]);
             }
@@ -47441,7 +47448,12 @@ Processor.prototype = {
     control.className = definition.type;
     control.spellcheck = "false";
     // determine initial value of control
-    if (prevValue !== undefined) {
+    if (this.opts.internalViewer) {
+      var internalDefault = definition.internalDefault;
+      if (internalDefault !== null && control !== null) {
+        control.value = internalDefault;
+      }
+    } else if (prevValue !== undefined) {
       control.value = prevValue;
     } else if ('initial' in definition) {
       control.value = definition.initial;
@@ -47473,23 +47485,28 @@ Processor.prototype = {
     for (var i = 0; i < this.paramDefinitions.length; i++) {
       var paramdef = this.paramDefinitions[i];
       paramdef.index = i + 1;
+      var ctlVal = prevParamValues[paramdef.name];
+
+      // use internalDefault if present and in internal view mode
 
       var control = null;
+
       var type = paramdef.type.toLowerCase();
       switch (type) {
         case 'choice':
-          control = this.createChoiceControl(paramdef, prevParamValues[paramdef.name]);
+          control = this.createChoiceControl(paramdef, ctlVal);
           break;
         case 'group':
           control = this.createGroupControl(paramdef);
           break;
         case 'textbox':
-          control = this.createMultilineTextControl(paramdef, prevParamValues[paramdef.name]);
+          control = this.createMultilineTextControl(paramdef, ctlVal);
           break;
         default:
-          control = this.createControl(paramdef, prevParamValues[paramdef.name]);
+          control = this.createControl(paramdef, ctlVal);
           break;
       }
+
       // add the appropriate element to the table
       var tr = document.createElement('tr');
       if (type === 'group') {
@@ -47527,6 +47544,10 @@ Processor.prototype = {
           td.appendChild(control.label);
         }
         tr.appendChild(td);
+        //hide the parameter if it is internal only
+        if (this.opts.internalViewer == false && paramdef.internal == true) {
+          tr.hidden = true;
+        }
       }
       this.parameterstable.appendChild(tr);
     }

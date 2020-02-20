@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<!--
+
+== OpenJSCAD.org, Copyright (c) 2016-2017, Licensed under MIT License ==
+   in conjunction with other libraries by various authors (see the individual files)
+-->
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width">
+  <title>Customizer</title>
+  <link rel="stylesheet" href="min.css" type="text/css">
+
+</head>
+
+
+<body>
+  <script src="dist/min.js"></script>
+<div id="mainUI">
+<!-- setup display of the errors as required by OpenJSCAD.js -->
+  <div class="jscad-container">
+    <div id="statusdiv"></div>
+
+
+<!-- setup display of the viewer, i.e. canvas -->
+    <div oncontextmenu="return false;" class="column" div id="viewerContext" design-url="jscad/kettlebellModel.jscad" internalViewer=false></div>
+    
+        
+
+
+<!-- setup display of the status, as required by OpenJSCAD.js -->
+<!-- set display: block to display this -->
+    <div class="column" id="tail">
+        <div id="parametersdiv"></div> 
+    </div>
+</div>
+
+    <div id="urlDiv">
+        <div id="internal" hidden = true>  <!-- only shown for internal viewer -->
+        <p><a href="" id="urlLink">Custom Link</a></p>  
+        </div>
+        <div id='postUI'>
+            <p>Design ID: <textarea readonly id="designID"></textarea></p>
+            <p><button  id="copyDesignID">Copy Design ID</button></p>
+
+        <p>How to order this item:
+            <ol>             
+                <li>Once everything is just right, copy your unique design ID above.</li>
+                <li>Click the Etsy listing below, paste the design ID in the personalization field.</li>
+                <li>In Etsy, select any other options such as item size, then complete your order.</li>
+                <li>We'll 3D print it exactly how you see it!</li>
+            </ol>
+        </p>
+            <a href="https://www.etsy.com/listing/772653911/weight-plate-custom-text-clock">Weight Plate Clock Listing on Etsy</a>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

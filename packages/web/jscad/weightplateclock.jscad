@@ -7,25 +7,25 @@ function getParameterDefinitions () {
     {name: 'BottomText', initial: 'STANDARD', type: 'textbox', caption: 'Bottom Text', maxLength: 14},
     {name: 'LeftText', initial: '45\nLBS', type: 'textbox', caption: 'Left Text'},
     {name: 'RightText', initial: '20.4\nKGS', type: 'textbox', caption: 'Right Text'},
-
-    //{name: 'hidePlate', checked: false, type: 'checkbox', caption: 'Hide Plate'},
-    {name: 'displayOptions', type: 'group', caption: 'Render Options'},
-    {name: 'sizeInternal',
-    type: 'choice',
-    caption: 'Clock Diameter',
-    values: ['11', '15', '18'],
-    captions: ['11"', '15"', '18"'],
-    initial: '15'
-  },
-    {name: 'colorInternal',
+    {name: 'colorOpt',
     type: 'choice',
     caption: 'Color',
     values: ['#dedede', '#1c1c1c'],
     captions: ['Gray', 'Black'],
     initial: '15'
     },
-    {name: 'showKitInternal', checked: true, type: 'checkbox', caption: 'Show Clock Hands'},
-    {name: 'bananaInternal', checked: false, type: 'checkbox', caption: 'Banana for Scale'},
+    {name: 'sizeOpt',
+    type: 'choice',
+    caption: 'Clock Diameter',
+    values: ['11', '15', '18'],
+    captions: ['11"', '15"', '18"'],
+    initial: '15',
+    internal: true
+  },
+    //{name: 'hidePlate', checked: false, type: 'checkbox', caption: 'Hide Plate'},
+    {name: 'displayOptions', type: 'group', caption: 'Render Options'},   
+    {name: 'showKitInternal', checked: true, type: 'checkbox', caption: 'Show Clock Hands', internalDefault: false},
+    {name: 'bananaInternal', checked: false, type: 'checkbox', caption: 'Banana for Scale', internal: true},
     //{name: 'color', type: 'color', initial: '#0F0F0F', caption: 'Color?'}
   ];
 }
@@ -38,7 +38,7 @@ function main (param) {
 
   var item = weightPlateBase(param, ClockMode = true);
   if(param.showKitInternal) {
-    item = item.union(clockAssm(param.sizeInternal, param.colorInternal == '#1c1c1c').translate([-102,-47,-81])); }
+    item = item.union(clockAssm(param.sizeOpt, param.colorOpt == '#1c1c1c').translate([-102,-47,-81])); }
   item = allItemBase(param, item);
   return item;
 }
